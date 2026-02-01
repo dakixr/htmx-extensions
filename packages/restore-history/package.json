@@ -1,0 +1,17 @@
+{
+  "name": "@dakixr/htmx-restore-history",
+  "version": "1.0.0",
+  "description": "HTMX extension for manual history restoration via htmx.restoreHistory(path)",
+  "main": "restore-history.js",
+  "keywords": [
+    "htmx",
+    "extension",
+    "history",
+    "navigation"
+  ],
+  "author": "Daniel Rodriguez <dakixr@gmail.com>",
+  "license": "MIT",
+  "peerDependencies": {
+    "htmx.org": "^1.9.0 || ^2.0.0"
+  }
+}
