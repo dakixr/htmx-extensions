@@ -1,0 +1,20 @@
+{
+  "name": "@dakixr/htmx-download",
+  "version": "1.0.0",
+  "description": "HTMX extension for handling file downloads (Excel, PDF, etc.) without page reload",
+  "main": "htmx-download.js",
+  "keywords": [
+    "htmx",
+    "extension",
+    "download",
+    "file",
+    "binary",
+    "excel",
+    "pdf"
+  ],
+  "author": "dakixr",
+  "license": "MIT",
+  "peerDependencies": {
+    "htmx.org": ">=1.9.0 || >=2.0.0"
+  }
+}
