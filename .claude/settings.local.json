@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(gh repo view:*)",
-      "Bash(gh repo edit:*)",
-      "Bash(gh api:*)"
-    ]
-  }
-}
