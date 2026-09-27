@@ -6,14 +6,15 @@ Lightweight, zero-dependency HTMX extensions. No build step required.
 
 ### [@dakixr/htmx-global-indicator](./packages/global-indicator/)
 
-Smart loading indicators that overlay only the target element being updated.
+Loading feedback that only shows up when a request is actually slow.
 
 **Features:**
-- Scoped overlays on target elements (full-screen for body/boosted requests)
-- Configurable delays: 100ms for overlay, 400ms for spinner
+- Dims only the swap target after 200ms, adds a spinner after 1s
+- Top progress bar for page navigations (boosted or `<body>` requests)
+- Nothing shown for fast requests, and no blinking for borderline ones
 - Automatic handling of concurrent requests
 - Ignores preloaded requests (`HX-Preloaded` header)
-- Dark mode support (detects `.dark` class)
+- Themeable through `--background` / `--primary` CSS variables
 - Opt-out via `hx-disinherit="global-indicator"`
 
 ```html

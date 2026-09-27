@@ -1,29 +1,31 @@
 # htmx-global-indicator
 
-**A minimal HTMX extension that adds a global loading overlay and optional delayed spinner, with dark mode support.**
+**A minimal HTMX extension that shows loading feedback only when a request is actually slow.**
 
 ---
 
 ## Overview
 
-htmx-global-indicator is a minimal extension for HTMX that adds a **loading overlay** (and optional **delayed spinner**) *directly on the swap target*, based on the `target` specified in your HTMX config for that request. Not a full-screen spinner — it scopes the loading indicator to *where the swap is actually happening*.
+htmx-global-indicator gives HTMX requests loading feedback without the flash you get when an overlay appears and vanishes on fast requests.
 
-- **Overlay and spinner** appear **only over the request's target element**.
-- No full-page blocking, no centralized spinner — just precise, scoped feedback tied to the element users are actually interacting with.
-- Pure vanilla JS — no dependencies, no build step.
-
----
+- **Partial swaps** dim *only the request's target element*, after a short delay, and add a spinner if the request keeps going.
+- **Page navigations** (boosted requests or requests targeting `<body>`) show a thin progress bar at the top of the page instead of covering it.
+- Requests that finish before the delays show nothing at all.
+- Pure vanilla JS, no dependencies, no build step.
 
 ## Features
 
-- Loading indicator overlays **only the HTMX request's target element** (not full-screen).
-- Optional spinner after a configurable delay (`100ms` default).
+- Target dim after `200ms`, spinner after `1000ms`.
+- Once the dim is visible it stays for at least `300ms`, so it never blinks.
+- Top progress bar after `150ms` for page navigations.
+- Clicks on the target are blocked immediately (no double submits) without any visible change.
+- Sets `aria-busy="true"` on the target while loading.
+- Handles concurrent requests on the same target.
 - Ignores preloaded (`HX-Preloaded`) requests automatically.
 - Respects `hx-disinherit="global-indicator"` to opt out at the element level.
-- Light and dark mode compatible.
+- Follows your theme through the `--background` and `--primary` CSS variables, with light and `.dark` fallbacks.
 
-
-**Demo**:  
+**Demo**:
 [Demo](./demo.gif)
 
 ## Installation
@@ -49,18 +51,30 @@ If you want to opt out of the global indicator on child elements:
 </div>
 ```
 
-## Customization
+## Configuration
 
-- Change `spinnerDelay` (ms) at the top of `global-indicator.js`.
-- Modify the spinner and overlay styles by editing the injected `<style>` block.
+Override any setting through `htmx.config.globalIndicator`, for example with the htmx config meta tag:
+
+```html
+<meta name="htmx-config" content='{"globalIndicator":{"spinnerDelay":800,"bar":false}}'>
+```
+
+| Setting        | Default | Description                                                  |
+| -------------- | ------- | ------------------------------------------------------------ |
+| `dimDelay`     | `200`   | ms before the target is dimmed                               |
+| `spinnerDelay` | `1000`  | ms before a spinner is added to the dim                      |
+| `minVisible`   | `300`   | minimum ms the dim stays once it has appeared                |
+| `barDelay`     | `150`   | ms before the top progress bar appears for page navigations  |
+| `bar`          | `true`  | set to `false` if your page already has its own progress bar |
+
+Restyle it by overriding the `.htmx-local-overlay`, `.htmx-local-spinner` and `.htmx-global-bar` classes.
 
 ## How It Works
 
-- On `htmx:beforeRequest`, `.htmx-loading` is immediately added to the **target**.
-- After `spinnerDelay`, `.show-spinner` is added.
-- After request completion, error, or abort, the classes are removed and any timers are cleared.
-
-No full-page blocking, no centralized spinner — just precise, scoped feedback tied to the element users are actually interacting with.
+- On `htmx:beforeRequest`, a transparent `.htmx-local-overlay` is added to the **target**.
+- After `dimDelay`, the overlay gets `.is-visible` and fades in; after `spinnerDelay`, a `.htmx-local-spinner` is added to it.
+- When the request finishes, the overlay is removed, after waiting out `minVisible` if it was visible.
+- For page navigations, `.htmx-global-bar` (attached to `<html>` so body swaps do not remove it) creeps towards 90% while loading, then completes and fades out.
 
 ## Feedback
 

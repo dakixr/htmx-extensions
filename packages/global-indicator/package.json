@@ -1,14 +1,15 @@
 {
   "name": "@dakixr/htmx-global-indicator",
-  "version": "1.0.0",
-  "description": "A minimal HTMX extension that adds a global loading overlay and optional delayed spinner, with dark mode support.",
+  "version": "1.1.0",
+  "description": "A minimal HTMX extension that shows loading feedback only when a request is actually slow: delayed target dim, spinner, and a top progress bar for page navigations.",
   "main": "global-indicator.js",
   "keywords": [
     "htmx",
     "extension",
     "loading",
     "spinner",
-    "overlay"
+    "overlay",
+    "progress-bar"
   ],
   "author": "Daniel Rodriguez <dakixr@gmail.com>",
   "license": "MIT",
